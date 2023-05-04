@@ -28,11 +28,15 @@ const Main = () => {
 	const [auth, setAuth] = createSignal({} as Authentication);
 	// const [user] = createResource(loginRequest, fetchUser);
 	const [otp, setOtp] = createSignal("");
+	const [otpMessage, setOtpMessage] = createSignal(t("votes.otp.message"));
 
 	const handleLogin = async () => {
 		setLoginRequest({ dni: dni(), full_name: "none" });
 		const response = await fetchUser(loginRequest());
 		setUser(response);
+		setOtpMessage(
+			otpMessage()?.replace("_full_name_", user().details.full_name),
+		);
 		setMode("otp");
 
 		console.log(user());
@@ -61,10 +65,11 @@ const Main = () => {
 							<p class="font-bold uppercase text-4xl">{entity?.name}</p>
 							<div class="flex flex-row justify-between">
 								<div class="flex-1 text-lg">
-									<p class="inline">{t("votes.welcome")}</p>
-									<p class="inline font-bold uppercase">{entity?.name}</p>
-									<p class="inline">{t("votes.welcome-2")}</p>
-									<p class="inline">{entity?.description}</p>
+									<p>
+										{t("votes.welcome")
+											.replace("_entity_name_", entity?.name)
+											.replace("_description_", entity?.description)}
+									</p>
 								</div>
 								<div class="flex-1 grid place-items-center">
 									<button
@@ -122,7 +127,7 @@ const Main = () => {
 								{entity?.name}
 							</p>
 							<div class="w-full flex flex-row gap-6">
-								<p class="w-1/2 text-sm">{t("votes.otp.message")}</p>
+								<p class="w-1/2 text-sm">{otpMessage()}</p>
 								<div class="w-1/2 flex flex-col items-center justify-center gap-3">
 									<input
 										class="w-full border border-black outline-none py-1 px-2"
