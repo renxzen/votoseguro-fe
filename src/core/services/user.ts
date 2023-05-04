@@ -1,6 +1,6 @@
 import { LoginRequest, OtpRequest } from "../types/Requests";
 
-const baseUrl = "https://7d41-2800-4b0-430b-f5a0-c402-c4d9-d16e-3f0.ngrok-free.app/api/v1.0";
+const baseUrl = "https://4c27-2800-4b0-430b-f5a0-c835-b17f-e988-cc0c.ngrok-free.app";
 
 export const fetchUser = async (request: LoginRequest) =>
 	(

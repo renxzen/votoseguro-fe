@@ -13,7 +13,6 @@ const Main = () => {
 	const [t] = useI18n();
 	const params = useParams<{ id: string }>();
 	const [response] = createResource(fetchEntities);
-
 	const entity: Entity | undefined = response()?.results.find(
 		(entity: Entity) => entity.id === Number(params.id),
 	);
@@ -28,15 +27,11 @@ const Main = () => {
 	const [auth, setAuth] = createSignal({} as Authentication);
 	// const [user] = createResource(loginRequest, fetchUser);
 	const [otp, setOtp] = createSignal("");
-	const [otpMessage, setOtpMessage] = createSignal(t("votes.otp.message"));
 
 	const handleLogin = async () => {
 		setLoginRequest({ dni: dni(), full_name: "none" });
 		const response = await fetchUser(loginRequest());
 		setUser(response);
-		setOtpMessage(
-			otpMessage()?.replace("_full_name_", user().details.full_name),
-		);
 		setMode("otp");
 
 		console.log(user());
@@ -127,7 +122,12 @@ const Main = () => {
 								{entity?.name}
 							</p>
 							<div class="w-full flex flex-row gap-6">
-								<p class="w-1/2 text-sm">{otpMessage()}</p>
+								<p class="w-1/2 text-sm">
+									{t("votes.otp.message")?.replace(
+										"_full_name_",
+										user().details.full_name,
+									)}
+								</p>
 								<div class="w-1/2 flex flex-col items-center justify-center gap-3">
 									<input
 										class="w-full border border-black outline-none py-1 px-2"
