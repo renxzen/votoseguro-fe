@@ -1,8 +1,8 @@
 import { useI18n } from "@solid-primitives/i18n";
 import { createSignal, onCleanup } from "solid-js";
-// import vote from "../../public/svg/vote.svg";
+import vote from "~/assets/svg/vote.svg";
 import { Indicator } from "../core/types/Indicator";
-import { c } from "../core/utils/c";
+import { c } from "~/core/utils/c";
 
 const Main = () => {
 	const [t] = useI18n();
@@ -10,7 +10,7 @@ const Main = () => {
 	const [total, setTotal] = createSignal(1290);
 	const [clients, setClients] = createSignal(354);
 
-	const getNumber = (indicator: string) => {
+	const getNumber = (indicator: string): number => {
 		switch (indicator) {
 			case "received":
 				return received();
@@ -18,9 +18,9 @@ const Main = () => {
 				return total();
 			case "clients":
 				return clients();
-			default:
-				0;
 		}
+
+		return 0;
 	};
 
 	const receivedTimer = setInterval(
@@ -43,7 +43,12 @@ const Main = () => {
 	});
 
 	return (
-		<main class="h-[calc(100vh-74px)] w-100 flex flex-col-reverse md:flex-row gap-13 items-center md:justify-between bg-coral md:py-16">
+		<main
+			class={c(
+				"h-[calc(100vh-74px)] w-100 flex flex-col-reverse items-center bg-coral",
+				"md:flex-row gap-13 md:justify-between md:py-16",
+			)}
+		>
 			<div
 				class={c(
 					"bg-white px-5 grid grid-cols-1 grid-rows-3 gap-3 py-12 rounded-t-3xl",
@@ -52,9 +57,9 @@ const Main = () => {
 				)}
 			>
 				{t("main.indicators").map((item: Indicator) => (
-					<div class="w-48 flex flex-col gap-1 sm:gap-3 text-center">
+					<div class="w-48 flex flex-col gap-1 text-center sm:gap-3 ">
 						<p class="text-3xl sm:text-4xl lg:text-5xl">
-							{getNumber(item.indicator)?.toLocaleString()}
+							{getNumber(item.indicator).toLocaleString()}
 						</p>
 						<p class="text-base sm:text-lg lg:text-xl text-coral">
 							{item.name}
@@ -69,13 +74,15 @@ const Main = () => {
 					</p>
 					<img
 						class="w-1/2 max-w-500"
-						src="svg/vote.svg"
+						src={vote}
 					/>
 				</div>
 				<div class="grid place-items-center py-6">
-					<button class="bg-white px-4 py-1 rounded-full">
-						{t("main.call-to-action")}
-					</button>
+					<a href="/votaciones">
+						<button class="bg-white px-4 py-1 rounded-full">
+							{t("main.call-to-action")}
+						</button>
+					</a>
 				</div>
 			</div>
 		</main>

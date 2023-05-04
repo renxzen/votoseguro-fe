@@ -1,5 +1,5 @@
 import { useI18n } from "@solid-primitives/i18n";
-import { Link } from "../core/types/Link";
+import { Link } from "~/core/types/Link";
 import { useLocation, A } from "solid-start";
 
 const Header = () => {
@@ -26,7 +26,7 @@ const Header = () => {
 				<p class="text-2xl">{t("header.title")}</p>
 				<ul class="hidden md:flex gap-6">
 					{t("header.subpages").map((item: Link) => (
-						<li>
+						<li class="hover:text-coral">
 							<A href="/">{item.name}</A>
 						</li>
 					))}

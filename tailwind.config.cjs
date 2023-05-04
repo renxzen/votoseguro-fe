@@ -13,6 +13,7 @@ module.exports = {
 			},
 			colors: {
 				coral: "#DC6453",
+				grey: "#E8E3E3",
 			},
 			width: {
 				500: "32rem",

@@ -1,7 +1,6 @@
 // @refresh reload
 import { Suspense } from "solid-js";
 import {
-	useLocation,
 	Body,
 	ErrorBoundary,
 	FileRoutes,
@@ -14,16 +13,17 @@ import {
 } from "solid-start";
 import { I18nContext, createI18nContext } from "@solid-primitives/i18n";
 import "./root.css";
-import locales from "./core/locales.json";
+import locales from "~/assets/locales.json";
 
 export default function Root() {
-	const value = createI18nContext(locales, "es");
+	const i18n = createI18nContext(locales, "es");
+	const [t] = i18n;
 
 	return (
 		<Html lang="es">
-			<I18nContext.Provider value={value}>
+			<I18nContext.Provider value={i18n}>
 				<Head>
-					<Title>VotoSeguro</Title>
+					<Title>{t("title")}</Title>
 					<Meta charset="utf-8" />
 					<Meta
 						name="viewport"
