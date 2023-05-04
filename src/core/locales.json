@@ -1,0 +1,49 @@
+{
+	"es": {
+		"header": {
+			"title": "VotoSeguro",
+			"subpages": [
+				{
+					"name": "Contáctanos",
+					"link": "/contactanos"
+				},
+				{
+					"name": "Nosotros",
+					"link": "/nosotros"
+				},
+				{
+					"name": "Precios",
+					"link": "/precios"
+				}
+			],
+			"buttons": [
+				{
+					"name": "Ingresar",
+					"link": "/login"
+				},
+				{
+					"name": "Registrarse",
+					"link": "/signup"
+				}
+			]
+		},
+		"main": {
+			"title": "Realiza las votaciones de tu entidad de manera segura",
+			"indicators": [
+				{
+					"name": "Votos Recibidos",
+					"indicator": "received"
+				},
+				{
+					"name": "Votaciones",
+					"indicator": "total"
+				},
+				{
+					"name": "Clientes",
+					"indicator": "clients"
+				}
+			],
+			"call-to-action": "Ver votaciones disponibles"
+		}
+	}
+}
