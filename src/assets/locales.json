@@ -48,7 +48,10 @@
 		},
 		"votes": {
 			"title": "Votaciones actuales",
-			"placeholder": "Buscar..."
+			"placeholder": "Buscar...",
+			"welcome": "Bienvenido a la votación de ",
+			"welcome-2": ". Puede ingresar verificando tu identidad para realizar la votación con la siguiente descripción: ",
+			"login-button": "Ingresar"
 		}
 	}
 }

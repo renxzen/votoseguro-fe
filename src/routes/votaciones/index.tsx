@@ -31,18 +31,25 @@ const Main = () => {
 	return (
 		<>
 			<Header />
-			<div class="h-[calc(100vh-74px)] w-full flex flex-col gap-6">
-				<div class="w-100 bg-coral flex justify-between p-8">
-					<p class="text-white text-4xl font-bold">{t("votes.title")}</p>
+			<div class="h-[calc(100vh-74px)] w-full flex flex-col gap-6 mb-8">
+				<div
+					class={c(
+						"w-100 bg-coral flex flex-col p-8 gap-4",
+						"md:flex-row md:justify-between",
+					)}
+				>
+					<p class="text-white text-3xl md:text-4xl font-bold">
+						{t("votes.title")}
+					</p>
 					<div class="flex items-center gap-4">
 						<img
 							class="h-6"
 							src={search}
 						/>
-						<div class="flex relative">
+						<div class="flex relative w-full">
 							<input
 								type="text"
-								class="rounded-full px-4 py-2 outline-none"
+								class="rounded-full px-4 py-2 outline-none w-full"
 								placeholder={t("votes.placeholder")}
 								value={input()}
 								oninput={(e) => setInput(e.target.value)}
@@ -68,9 +75,10 @@ const Main = () => {
 					)}
 				>
 					{entities()?.map((entity) => (
+						<a href={`/votaciones/${entity.id}`}>
 						<div class="bg-grey rounded-3xl transition-transform hover:scale-110">
 							<div class="w-300 max-h-40 overflow-hidden border border-coral rounded-3xl">
-								<img src={entity.image} />
+								<img class="w-300 object-cover object-center" src={entity.image} />
 							</div>
 							<div class="pt-1 pb-3 px-3 break-all w-full flex flex-col gap-1">
 								<p class="font-bold uppercase">{entity.name}</p>
@@ -86,6 +94,7 @@ const Main = () => {
 								</div>
 							</div>
 						</div>
+						</a>
 					))}
 				</div>
 			</div>
