@@ -61,6 +61,10 @@
 			"otp": {
 				"message": "Bienvenido _full_name_, te encuentras en el padrón de votantes, ahora vamos a verificar tu identidad, te hemos enviado una clave de un solo uso a tu correo y celular. Por favor ingrésalo en la casilla."
 			}
+		},
+		"candidates": {
+			"subtitle": "Bienvenido a la votación de _entity_name_, para la siguiente elección: _description_. Podrás empezar la votación durante el tiempo de duración establecido. Para conocer tus opciones de votación puedes ver la información en la parte de abajo."
+
 		}
 	}
 }

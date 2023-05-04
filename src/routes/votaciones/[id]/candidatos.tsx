@@ -22,6 +22,22 @@ const Main = () => {
 						class="w-full"
 						src={entity?.image}
 					/>
+					<div>
+						<div>
+							<p class="font-bold uppercase text-4xl">{entity?.name}</p>
+							<p>
+								{t("candidates.subtitle")
+									.replace("_entity_name_", entity?.name)
+									.replace("_description_", entity?.description)}
+							</p>
+						</div>
+						<div>
+							<div></div>
+							<div></div>
+							<div></div>
+							<div></div>
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>

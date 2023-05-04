@@ -41,8 +41,8 @@ const Main = () => {
 		setOtpRequest({ code: otp(), token: user()?.token });
 		const response = await fetchOtp(otpRequest());
 		console.log(response);
-		setAuth(response);
-		// window.localStorage.setItem("auth", JSON.stringify(auth()))
+		// setAuth(response);
+		window.localStorage.setItem("auth", JSON.stringify(response.details));
 	};
 
 	const getMode = () => {
