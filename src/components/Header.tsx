@@ -33,7 +33,7 @@ const Header = () => {
 			</nav> */}
 			<div class="flex items-center gap-12">
 				<A href="/">
-					<p class="text-2xl">{t("header.title")}</p>
+					<p class="text-2xl hover:font-bold hover:scale-110 hover:text-coral transition-all">{t("header.title")}</p>
 				</A>
 				<ul class="hidden md:flex gap-6">
 					{t("header.subpages").map((item: Link) => (
@@ -45,9 +45,10 @@ const Header = () => {
 			</div>
 			<div class="hidden md:grid grid-cols-2 auto-rows-fr ">
 				{t("header.buttons").map((item: Link, index: number) => (
-					<button
+					<a
+						href="/votaciones"
 						class={c(
-							"border-coral border py-2 px-6 transition-colors duration-300",
+							"text-center border-coral border py-2 px-6 transition-colors duration-300",
 							`${
 								index === 0
 									? hoverLogin()
@@ -66,7 +67,7 @@ const Header = () => {
 						{...(index === 0 ? hoverHandler : {})}
 					>
 						{item.name}
-					</button>
+					</a>
 				))}
 			</div>
 		</header>

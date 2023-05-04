@@ -31,12 +31,13 @@ const Main = () => {
 	});
 
 	const receivedTimer = setInterval(() => {
-		setReceived(received() + Math.floor(Math.random() * 10));
+		setReceived(received() + Math.floor(1 + Math.random() * 9));
 		setChanged({ ...changed, received: true });
 		setTimeout(() => {
 			setChanged({ ...changed, received: false });
 		}, 500);
 	}, 2500);
+
 	const totalTimer = setInterval(() => {
 		setTotal(total() + Math.floor(Math.random() * 10));
 		setChanged({ ...changed, total: true });
@@ -44,6 +45,7 @@ const Main = () => {
 			setChanged({ ...changed, total: false });
 		}, 500);
 	}, 3500);
+
 	const clientsTimer = setInterval(() => {
 		setClients(clients() + Math.floor(Math.random() * 10));
 		setChanged({ ...changed, clients: true });
@@ -77,7 +79,11 @@ const Main = () => {
 						<p
 							class={c(
 								"text-3xl sm:text-4xl lg:text-5xl transition-colors duration-500",
-								`${changed[item.indicator as keyof typeof changed] ? "text-green-600" : ""}`,
+								`${
+									changed[item.indicator as keyof typeof changed]
+										? "text-green-500"
+										: ""
+								}`,
 							)}
 						>
 							{getNumber(item.indicator).toLocaleString()}

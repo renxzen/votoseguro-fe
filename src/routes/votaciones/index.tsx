@@ -16,6 +16,10 @@ const Main = () => {
 		<>
 			<Header />
 			<div class="h-[calc(100vh-74px)] w-full grid place-items-center">
+				{/* search bar */}
+				<div>
+
+				</div>
 				<div
 					class={c(
 						"w-full flex flex-wrap justify-center gap-8",
@@ -23,7 +27,7 @@ const Main = () => {
 					)}
 				>
 					{entities()?.map((entity) => (
-						<div class="bg-grey rounded-3xl">
+						<div class="bg-grey rounded-3xl transition-transform hover:scale-110">
 							<div class="w-300 max-h-40 overflow-hidden border border-coral rounded-3xl">
 								<img src={entity.image} />
 							</div>
