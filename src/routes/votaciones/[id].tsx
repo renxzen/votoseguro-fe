@@ -2,7 +2,7 @@ import { useI18n } from "@solid-primitives/i18n";
 import Header from "~/components/Header";
 import { useParams } from "solid-start";
 import { fetchEntities } from "~/core/services/entity";
-import { createEffect, createResource, createSignal } from "solid-js";
+import { createResource, createSignal } from "solid-js";
 import { c } from "~/core/utils/c";
 import { Entity } from "~/core/types/Entity";
 import { Authentication, User } from "~/core/types/Responses";
@@ -41,8 +41,9 @@ const Main = () => {
 	const handleOtp = async () => {
 		setOtpRequest({ code: otp(), token: user()?.token });
 		const response = await fetchOtp(otpRequest());
+		console.log(response);
 		setAuth(response);
-		window.localStorage.setItem("auth", JSON.stringify(auth()))
+		// window.localStorage.setItem("auth", JSON.stringify(auth()))
 	};
 
 	const getMode = () => {
