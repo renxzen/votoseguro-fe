@@ -1,14 +1,23 @@
 import { useI18n } from "@solid-primitives/i18n";
 import { Link } from "~/core/types/Link";
 import { useLocation, A } from "solid-start";
+import { createSignal } from "solid-js";
+import { c } from "~/core/utils/c";
 
 const Header = () => {
 	const [t] = useI18n();
 	const location = useLocation();
-	const active = (path: string) =>
+	const [hoverLogin, setHoverLogin] = createSignal(false);
+
+	/* const active = (path: string) =>
 		path == location.pathname
 			? "border-sky-600"
-			: "border-transparent hover:border-sky-600";
+			: "border-transparent hover:border-sky-600"; */
+
+	const hoverHandler = {
+		onmouseover: () => setHoverLogin(true),
+		onmouseleave: () => setHoverLogin(false),
+	};
 
 	return (
 		<header class="flex justify-between px-9 py-4">
@@ -23,7 +32,9 @@ const Header = () => {
 				</ul>
 			</nav> */}
 			<div class="flex items-center gap-12">
-				<p class="text-2xl">{t("header.title")}</p>
+				<A href="/">
+					<p class="text-2xl">{t("header.title")}</p>
+				</A>
 				<ul class="hidden md:flex gap-6">
 					{t("header.subpages").map((item: Link) => (
 						<li class="hover:text-coral">
@@ -35,8 +46,24 @@ const Header = () => {
 			<div class="hidden md:grid grid-cols-2 auto-rows-fr ">
 				{t("header.buttons").map((item: Link, index: number) => (
 					<button
-						class={`border-coral border-[1px] ${index !== 0 ? "bg-coral text-white" : ""
-							} py-2 px-6`}
+						class={c(
+							"border-coral border py-2 px-6 transition-colors duration-300",
+							`${
+								index === 0
+									? hoverLogin()
+										? "bg-coral text-white"
+										: "bg-white text-black"
+									: ""
+							} `,
+							`${
+								index === 1
+									? !hoverLogin()
+										? "bg-coral text-white"
+										: "bg-white text-black"
+									: ""
+							} `,
+						)}
+						{...(index === 0 ? hoverHandler : {})}
 					>
 						{item.name}
 					</button>

@@ -3,6 +3,7 @@ import { createSignal, onCleanup } from "solid-js";
 import vote from "~/assets/svg/vote.svg";
 import { Indicator } from "../core/types/Indicator";
 import { c } from "~/core/utils/c";
+import { createStore } from "solid-js/store";
 
 const Main = () => {
 	const [t] = useI18n();
@@ -23,18 +24,33 @@ const Main = () => {
 		return 0;
 	};
 
-	const receivedTimer = setInterval(
-		() => setReceived(received() + Math.floor(Math.random() * 10)),
-		2000,
-	);
-	const totalTimer = setInterval(
-		() => setTotal(total() + Math.floor(Math.random() * 10)),
-		2500,
-	);
-	const clientsTimer = setInterval(
-		() => setClients(clients() + Math.floor(Math.random() * 10)),
-		5000,
-	);
+	const [changed, setChanged] = createStore({
+		received: false,
+		total: false,
+		clients: false,
+	});
+
+	const receivedTimer = setInterval(() => {
+		setReceived(received() + Math.floor(Math.random() * 10));
+		setChanged({ ...changed, received: true });
+		setTimeout(() => {
+			setChanged({ ...changed, received: false });
+		}, 500);
+	}, 2500);
+	const totalTimer = setInterval(() => {
+		setTotal(total() + Math.floor(Math.random() * 10));
+		setChanged({ ...changed, total: true });
+		setTimeout(() => {
+			setChanged({ ...changed, total: false });
+		}, 500);
+	}, 3500);
+	const clientsTimer = setInterval(() => {
+		setClients(clients() + Math.floor(Math.random() * 10));
+		setChanged({ ...changed, clients: true });
+		setTimeout(() => {
+			setChanged({ ...changed, clients: false });
+		}, 500);
+	}, 5000);
 
 	onCleanup(() => {
 		clearInterval(receivedTimer);
@@ -58,7 +74,12 @@ const Main = () => {
 			>
 				{t("main.indicators").map((item: Indicator) => (
 					<div class="w-48 flex flex-col gap-1 text-center sm:gap-3 ">
-						<p class="text-3xl sm:text-4xl lg:text-5xl">
+						<p
+							class={c(
+								"text-3xl sm:text-4xl lg:text-5xl transition-colors duration-500",
+								`${changed[item.indicator as keyof typeof changed] ? "text-green-600" : ""}`,
+							)}
+						>
 							{getNumber(item.indicator).toLocaleString()}
 						</p>
 						<p class="text-base sm:text-lg lg:text-xl text-coral">
@@ -79,7 +100,7 @@ const Main = () => {
 				</div>
 				<div class="grid place-items-center py-6">
 					<a href="/votaciones">
-						<button class="bg-white px-4 py-1 rounded-full">
+						<button class="bg-white px-4 py-1 rounded-full hover:scale-110 transition-all">
 							{t("main.call-to-action")}
 						</button>
 					</a>

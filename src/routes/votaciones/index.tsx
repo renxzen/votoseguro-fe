@@ -1,5 +1,5 @@
 import { useI18n } from "@solid-primitives/i18n";
-import { createResource } from "solid-js";
+import { createResource, createSignal } from "solid-js";
 import Header from "~/components/Header";
 import { fetchEntities } from "~/core/services/entity";
 import { Entity } from "~/core/types/Entity";
@@ -9,14 +9,20 @@ import clock from "~/assets/svg/clock.svg";
 
 const Main = () => {
 	const [t] = useI18n();
-	const [entities] = createResource(fetchEntities);
+	const [response] = createResource(fetchEntities);
+	const [entities, setEntities] = createSignal<Entity[]>(response()?.results)
 
 	return (
 		<>
 			<Header />
 			<div class="h-[calc(100vh-74px)] w-full grid place-items-center">
-				<div class="w-full flex flex-wrap md:items-center justify-center gap-8 md:gap-24">
-					{entities()?.results?.map((entity: Entity) => (
+				<div
+					class={c(
+						"w-full flex flex-wrap justify-center gap-8",
+						"md:items-center md:gap-24",
+					)}
+				>
+					{entities()?.map((entity) => (
 						<div class="bg-grey rounded-3xl">
 							<div class="w-300 max-h-40 overflow-hidden border border-coral rounded-3xl">
 								<img src={entity.image} />
