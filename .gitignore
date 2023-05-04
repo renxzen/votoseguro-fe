@@ -18,6 +18,8 @@ netlify
 
 # Temp
 gitignore
+package-lock.json
+pnpm-lock.yaml
 
 # System Files
 .DS_Store
