@@ -2,54 +2,154 @@ import { useI18n } from "@solid-primitives/i18n";
 import Header from "~/components/Header";
 import { useParams } from "solid-start";
 import { fetchEntities } from "~/core/services/entity";
-import { createResource } from "solid-js";
+import { createEffect, createResource, createSignal } from "solid-js";
 import { c } from "~/core/utils/c";
 import { Entity } from "~/core/types/Entity";
+import { Authentication, User } from "~/core/types/Responses";
+import { LoginRequest, OtpRequest } from "~/core/types/Requests";
+import { fetchUser, fetchOtp } from "~/core/services/user";
 
 const Main = () => {
 	const [t] = useI18n();
 	const params = useParams<{ id: string }>();
 	const [response] = createResource(fetchEntities);
 
-	console.log(params.id);
-	const entity: Entity = response()?.results.find(
+	const entity: Entity | undefined = response()?.results.find(
 		(entity: Entity) => entity.id === Number(params.id),
 	);
-	console.log(entity);
 
-	return (
-		<>
-			<Header />
-			<div class="flex flex-col">
-				<div class="w-full max-h-52 overflow-hidden border-y border-coral">
-					<img
-						class="w-full"
-						src={entity?.image}
-					/>
-				</div>
-				<div class="flex flex-col gap-6 p-6 md:p-16">
-					<p class="font-bold uppercase text-4xl">{entity?.name}</p>
-					<div class="flex flex-row justify-between">
-						<div class="flex-1 text-lg">
-							<p class="inline">{t("votes.welcome")}</p>
-							<p class="inline font-bold uppercase">{entity?.name}</p>
-							<p class="inline">{t("votes.welcome-2")}</p>
-							<p class="inline">{entity?.description}</p>
+	// detail, login, otp
+	const [mode, setMode] = createSignal("detail");
+
+	const [dni, setDni] = createSignal("");
+	const [loginRequest, setLoginRequest] = createSignal({} as LoginRequest);
+	const [otpRequest, setOtpRequest] = createSignal({} as OtpRequest);
+	const [user, setUser] = createSignal({} as User);
+	const [auth, setAuth] = createSignal({} as Authentication);
+	// const [user] = createResource(loginRequest, fetchUser);
+	const [otp, setOtp] = createSignal("");
+
+	const handleLogin = async () => {
+		setLoginRequest({ dni: dni(), full_name: "none" });
+		const response = await fetchUser(loginRequest());
+		setUser(response);
+		setMode("otp");
+
+		console.log(user());
+	};
+
+	const handleOtp = async () => {
+		setOtpRequest({ code: otp(), token: user()?.token });
+		const response = await fetchOtp(otpRequest());
+		setAuth(response);
+		window.localStorage.setItem("auth", JSON.stringify(auth()))
+	};
+
+	const getMode = () => {
+		switch (mode()) {
+			case "detail":
+				return (
+					<div class="flex flex-col">
+						<div class="w-full max-h-52 overflow-hidden border-y border-coral">
+							<img
+								class="w-full"
+								src={entity?.image}
+							/>
 						</div>
-						<div class="flex-1 grid place-items-center">
-							<button
-								class={c(
-									"bg-coral py-3 px-16 text-white rounded-2xl font-bold text-4xl",
-									"transition-all hover:scale-110",
-								)}
-							>
-								{t("votes.login-button")}
-							</button>
+						<div class="flex flex-col gap-6 p-6 md:p-16">
+							<p class="font-bold uppercase text-4xl">{entity?.name}</p>
+							<div class="flex flex-row justify-between">
+								<div class="flex-1 text-lg">
+									<p class="inline">{t("votes.welcome")}</p>
+									<p class="inline font-bold uppercase">{entity?.name}</p>
+									<p class="inline">{t("votes.welcome-2")}</p>
+									<p class="inline">{entity?.description}</p>
+								</div>
+								<div class="flex-1 grid place-items-center">
+									<button
+										class={c(
+											"bg-coral py-3 px-16 text-white rounded-2xl font-bold text-4xl",
+											"transition-all hover:scale-110",
+										)}
+										onclick={() => setMode("login")}
+									>
+										{t("votes.login.button")}
+									</button>
+								</div>
+							</div>
 						</div>
 					</div>
-				</div>
-			</div>
-		</>
+				);
+			case "login":
+				return (
+					<div class="h-full w-full bg-coral grid place-items-center">
+						<div class="w-500 bg-white px-8 py-4 flex flex-col gap-6 rounded-3xl">
+							<p class="font-bold uppercase text-center text-2xl">
+								{entity?.name}
+							</p>
+							<p class="border-b border-coral">{t("votes.login.start")}</p>
+							<div class="w-full">
+								<div class="w-full md:w-1/2 flex flex-col gap-1">
+									<p class="font-bold text-gray-400">{t("votes.login.id")}</p>
+									<input
+										class="border border-black outline-none py-1 px-2"
+										placeholder={t("votes.login.id-placeholder")}
+										value={dni()}
+										oninput={(e) => setDni(e.target.value)}
+									/>
+								</div>
+							</div>
+							<div class="grid place-items-center">
+								<button
+									class={c(
+										"bg-coral py-2 px-12 text-white rounded-2xl font-bold text-xl",
+										"transition-all hover:scale-110",
+									)}
+									onclick={() => handleLogin()}
+								>
+									{t("votes.login.button")}
+								</button>
+							</div>
+						</div>
+					</div>
+				);
+			case "otp":
+				return (
+					<div class="h-full w-full bg-coral grid place-items-center">
+						<div class="w-500 bg-white px-8 py-4 flex flex-col gap-6 rounded-3xl">
+							<p class="font-bold uppercase text-center text-2xl border-b border-coral">
+								{entity?.name}
+							</p>
+							<div class="w-full flex flex-row gap-6">
+								<p class="w-1/2 text-sm">{t("votes.otp.message")}</p>
+								<div class="w-1/2 flex flex-col items-center justify-center gap-3">
+									<input
+										class="w-full border border-black outline-none py-1 px-2"
+										value={otp()}
+										oninput={(e) => setOtp(e.target.value)}
+									/>
+									<button
+										class={c(
+											"bg-coral py-2 px-12 text-white rounded-2xl font-bold text-xl",
+											"transition-all hover:scale-110",
+										)}
+										onclick={() => handleOtp()}
+									>
+										{t("votes.login.button")}
+									</button>
+								</div>
+							</div>
+						</div>
+					</div>
+				);
+		}
+	};
+
+	return (
+		<div class="h-screen">
+			<Header />
+			{getMode()}
+		</div>
 	);
 };
 
