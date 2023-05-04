@@ -45,6 +45,10 @@
 				}
 			],
 			"call-to-action": "Ver votaciones disponibles"
+		},
+		"votes": {
+			"title": "Votaciones actuales",
+			"placeholder": "Buscar..."
 		}
 	}
 }
