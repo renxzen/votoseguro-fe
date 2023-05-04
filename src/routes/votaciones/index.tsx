@@ -17,9 +17,6 @@ const Main = () => {
 			<Header />
 			<div class="h-[calc(100vh-74px)] w-full grid place-items-center">
 				{/* search bar */}
-				<div>
-
-				</div>
 				<div
 					class={c(
 						"w-full flex flex-wrap justify-center gap-8",
