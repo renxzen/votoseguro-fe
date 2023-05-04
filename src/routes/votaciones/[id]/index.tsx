@@ -1,6 +1,6 @@
 import { useI18n } from "@solid-primitives/i18n";
 import Header from "~/components/Header";
-import { useParams } from "solid-start";
+import { useNavigate, useParams } from "solid-start";
 import { fetchEntities } from "~/core/services/entity";
 import { createResource, createSignal } from "solid-js";
 import { c } from "~/core/utils/c";
@@ -12,37 +12,37 @@ import { fetchUser, fetchOtp } from "~/core/services/user";
 const Main = () => {
 	const [t] = useI18n();
 	const params = useParams<{ id: string }>();
+	const navigate = useNavigate();
+
 	const [response] = createResource(fetchEntities);
 	const entity: Entity | undefined = response()?.results.find(
 		(entity: Entity) => entity.id === Number(params.id),
 	);
 
-	// detail, login, otp
+	// detail -> login -> otp -> redirect()
 	const [mode, setMode] = createSignal("detail");
 
 	const [dni, setDni] = createSignal("");
-	const [loginRequest, setLoginRequest] = createSignal({} as LoginRequest);
-	const [otpRequest, setOtpRequest] = createSignal({} as OtpRequest);
-	const [user, setUser] = createSignal({} as User);
-	const [auth, setAuth] = createSignal({} as Authentication);
-	// const [user] = createResource(loginRequest, fetchUser);
 	const [otp, setOtp] = createSignal("");
+	const [user, setUser] = createSignal({} as User);
+	// const [user] = createResource(loginRequest, fetchUser);
 
 	const handleLogin = async () => {
-		setLoginRequest({ dni: dni(), full_name: "none" });
-		const response = await fetchUser(loginRequest());
+		const request: LoginRequest = { dni: dni(), full_name: "none" };
+		const response = await fetchUser(request);
 		setUser(response);
-		setMode("otp");
-
 		console.log(user());
+
+		setMode("otp");
 	};
 
 	const handleOtp = async () => {
-		setOtpRequest({ code: otp(), token: user()?.token });
-		const response = await fetchOtp(otpRequest());
+		const request: OtpRequest = { code: otp(), token: user()?.token };
+		const response = await fetchOtp(request);
 		console.log(response);
-		// setAuth(response);
+
 		window.localStorage.setItem("auth", JSON.stringify(response.details));
+		navigate("/about", { replace: true });
 	};
 
 	const getMode = () => {
