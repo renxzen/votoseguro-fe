@@ -1,7 +1,7 @@
 import { useI18n } from "@solid-primitives/i18n";
 import { useParams } from "solid-start";
 import Header from "~/components/Header";
-import { createResource, createSignal } from "solid-js";
+import { createResource } from "solid-js";
 import { fetchEntities } from "~/core/services/entity";
 import { Entity } from "~/core/types/Entity";
 
