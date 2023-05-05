@@ -1,13 +1,13 @@
 import { useI18n } from "@solid-primitives/i18n";
-import Header from "~/components/Header";
 import { useNavigate, useParams } from "solid-start";
-import { fetchEntities } from "~/core/services/entity";
 import { createResource, createSignal } from "solid-js";
+import { fetchEntities } from "~/core/services/entity";
 import { c } from "~/core/utils/c";
 import { Entity } from "~/core/types/Entity";
-import { Authentication, User } from "~/core/types/Responses";
+import { User } from "~/core/types/Responses";
 import { LoginRequest, OtpRequest } from "~/core/types/Requests";
 import { fetchUser, fetchOtp } from "~/core/services/user";
+import Header from "~/components/Header";
 
 const Main = () => {
 	const [t] = useI18n();
@@ -19,7 +19,6 @@ const Main = () => {
 		(entity: Entity) => entity.id === Number(params.id),
 	);
 
-	// detail -> login -> otp -> redirect()
 	const [mode, setMode] = createSignal("detail");
 
 	const [dni, setDni] = createSignal("");
@@ -41,8 +40,8 @@ const Main = () => {
 		const response = await fetchOtp(request);
 		console.log(response);
 
-		window.localStorage.setItem("auth", JSON.stringify(response.details));
-		navigate("/about", { replace: true });
+		sessionStorage.setItem("auth", JSON.stringify(response.details));
+		navigate(`/votaciones/${entity?.id}/candidatos`, { replace: true });
 	};
 
 	const getMode = () => {

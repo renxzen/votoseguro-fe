@@ -1,17 +1,27 @@
 import { useI18n } from "@solid-primitives/i18n";
-import { useParams } from "solid-start";
-import Header from "~/components/Header";
+import { useNavigate, useParams } from "solid-start";
 import { createResource } from "solid-js";
 import { fetchEntities } from "~/core/services/entity";
 import { Entity } from "~/core/types/Entity";
+import Header from "~/components/Header";
+import { Authentication } from "~/core/types/Responses";
 
 const Main = () => {
 	const [t] = useI18n();
 	const params = useParams<{ id: string }>();
+	const navigate = useNavigate();
+
 	const [response] = createResource(fetchEntities);
 	const entity: Entity | undefined = response()?.results.find(
 		(entity: Entity) => entity.id === Number(params.id),
 	);
+
+	// const item = sessionStorage.getItem("auth");
+	// if (!item) {
+	// 	navigate("/votaciones", { replace: true });
+	// }
+	// const auth: Authentication = JSON.parse(item!)
+	// console.log(auth)
 
 	return (
 		<div class="h-screen">
