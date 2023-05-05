@@ -1,0 +1,9 @@
+{
+	"status": "successful",
+	"msg": "Vontante activo, falta OTP",
+	"token": "57b34819f53986c6f08b5013ffe0e33b61e613c0",
+	"details": {
+		"full_name": "Richard Cancino",
+		"dni": "23123123"
+	}
+}

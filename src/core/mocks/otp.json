@@ -1,0 +1,8 @@
+{
+	"status": "successful",
+	"msg": "OTP validado",
+	"details": {
+		"token": "f419b99f5ae92d4873d54ed5183ecc9200f4c363",
+		"code": "1234"
+	}
+}

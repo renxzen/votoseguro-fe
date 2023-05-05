@@ -1,0 +1,25 @@
+{
+	"count": 2,
+	"next": null,
+	"previous": null,
+	"results": [
+		{
+			"id": 1,
+			"full_name": "Richard Cancino",
+			"image": "http://c5af-190-238-238-228.ngrok-free.app/media/candidates/None__RICHARD_CANCINO__292543349_462260685901694_6263011822499862470_n.jpeg",
+			"description": "Alcalde guapo",
+			"update_at": "2023-05-04",
+			"number_voters": 3,
+			"percentage_number_voters": "100.0%"
+		},
+		{
+			"id": 3,
+			"full_name": "Austin Ramirez",
+			"image": "http://c5af-190-238-238-228.ngrok-free.app/media/candidates/None__AUSTIN_RAMIREZ__292543349_462260685901694_6263011822499862470_n.jpeg",
+			"description": "Proplayer",
+			"update_at": "2023-05-04",
+			"number_voters": 0,
+			"percentage_number_voters": "0.0%"
+		}
+	]
+}
