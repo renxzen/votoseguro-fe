@@ -8,18 +8,24 @@ import moment from "moment";
 import clock from "~/assets/svg/clock.svg";
 import search from "~/assets/svg/search.svg";
 import cross from "~/assets/svg/cross.svg";
+import { useRouteData } from "solid-start";
+import { createServerData$ } from "solid-start/server";
+
+export const routeData = () =>
+	createServerData$(async () => await fetchEntities());
 
 const Main = () => {
 	const [t] = useI18n();
-	const [response] = createResource(fetchEntities);
-	const [entities, setEntities] = createSignal<Entity[]>(response()?.results);
+	const response = useRouteData<typeof routeData>();
+	const initialEntities = response()!;
+	const [entities, setEntities] = createSignal<Entity[]>(initialEntities);
 	const [input, setInput] = createSignal("");
 
 	createEffect(() => {
-		if (!input()) setEntities(response()?.results);
+		if (!input()) setEntities(initialEntities);
 
 		setEntities(
-			response()?.results?.filter((entity: Entity) =>
+			initialEntities.filter((entity: Entity) =>
 				entity.name
 					.replace(" ", "")
 					.toLowerCase()
@@ -76,24 +82,27 @@ const Main = () => {
 				>
 					{entities()?.map((entity) => (
 						<a href={`/votaciones/${entity.id}`}>
-						<div class="bg-grey rounded-3xl transition-transform hover:scale-110">
-							<div class="w-300 max-h-40 overflow-hidden border border-coral rounded-3xl">
-								<img class="w-300 object-cover object-center" src={entity.image} />
-							</div>
-							<div class="pt-1 pb-3 px-3 break-all w-full flex flex-col gap-1">
-								<p class="font-bold uppercase">{entity.name}</p>
-								<p class="text-xs">{entity.description}</p>
-								<div class="text-xs self-end">
+							<div class="bg-grey rounded-3xl transition-transform hover:scale-110">
+								<div class="w-300 max-h-40 overflow-hidden border border-coral rounded-3xl">
 									<img
-										class="inline w-4"
-										src={clock}
+										class="w-300 object-cover object-center"
+										src={entity.image}
 									/>
-									<p class="inline">
-										{`${moment().format("D/MM/YY")} 9:00 AM - 10:00 PM`}
-									</p>
+								</div>
+								<div class="pt-1 pb-3 px-3 break-all w-full flex flex-col gap-1">
+									<p class="font-bold uppercase">{entity.name}</p>
+									<p class="text-xs">{entity.description}</p>
+									<div class="text-xs self-end">
+										<img
+											class="inline w-4"
+											src={clock}
+										/>
+										<p class="inline">
+											{`${moment().format("D/MM/YY")} 9:00 AM - 10:00 PM`}
+										</p>
+									</div>
 								</div>
 							</div>
-						</div>
 						</a>
 					))}
 				</div>

@@ -1,8 +1,9 @@
 import { baseUrl } from "~/core/configs/base";
 import mockEntities from "~/core/mocks/entities.json";
-import mockCandidates from "~/core/mocks/candidates.json";
+import { Entity } from "../types/Entity";
 
-export const fetchEntities = async () =>
-	fetch(`${baseUrl}/entity`)
+export const fetchEntities = async (): Promise<Entity[]> =>
+	fetch(`${baseUrl}/entity/`)
 		.then((response) => response.json())
-		.catch(() => mockEntities);
+		.then((response: { results: Entity[] }) => response.results)
+		.catch(() => mockEntities.results);
