@@ -11,8 +11,7 @@ import cross from "~/assets/svg/cross.svg";
 import { useRouteData } from "solid-start";
 import { createServerData$ } from "solid-start/server";
 
-export const routeData = () =>
-	createServerData$(async () => await fetchEntities());
+export const routeData = () => createServerData$(fetchEntities);
 
 const Main = () => {
 	const [t] = useI18n();
