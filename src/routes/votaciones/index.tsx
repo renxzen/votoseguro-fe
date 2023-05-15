@@ -11,21 +11,20 @@ import cross from "~/assets/svg/cross.svg";
 import { useRouteData } from "solid-start";
 import { createServerData$ } from "solid-start/server";
 
-export const routeData = () =>
-	createServerData$(async () => await fetchEntities());
+export const routeData = () => createServerData$(fetchEntities);
 
-const Main = () => {
+const EntitiesPage = () => {
 	const [t] = useI18n();
 	const response = useRouteData<typeof routeData>();
 	const initialEntities = response()!;
-	const [entities, setEntities] = createSignal<Entity[]>(initialEntities);
+	const [entities, setEntities] = createSignal(initialEntities);
 	const [input, setInput] = createSignal("");
 
 	createEffect(() => {
 		if (!input()) setEntities(initialEntities);
 
 		setEntities(
-			initialEntities.filter((entity: Entity) =>
+			initialEntities?.filter((entity: Entity) =>
 				entity.name
 					.replace(" ", "")
 					.toLowerCase()
@@ -111,4 +110,4 @@ const Main = () => {
 	);
 };
 
-export default Main;
+export default EntitiesPage;
