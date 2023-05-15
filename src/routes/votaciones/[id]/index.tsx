@@ -1,6 +1,6 @@
 import { useI18n } from "@solid-primitives/i18n";
 import { useNavigate, useParams, useRouteData } from "solid-start";
-import { createDeferred, createEffect, createRenderEffect, createSignal } from "solid-js";
+import { createDeferred, createEffect, createSignal } from "solid-js";
 import { fetchEntities } from "~/core/services/entity";
 import { c } from "~/core/utils/c";
 import { Entity } from "~/core/types/Entity";
