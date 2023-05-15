@@ -11,11 +11,7 @@ import { Loading } from "~/components/Loading";
 import { c } from "~/core/utils/c";
 import clock from "~/assets/svg/clock.svg";
 import { getDateValues } from "~/core/utils/getDateValues";
-import server$, {
-	createServerAction$,
-	createServerData$,
-	redirect,
-} from "solid-start/server";
+import server$, { createServerData$, redirect } from "solid-start/server";
 
 export const routeData = () => createServerData$(fetchCandidates);
 
@@ -91,7 +87,7 @@ const CandidatesPage = () => {
 		const candidatesResponse = await getCandidates(params.id);
 		setCandidates(candidatesResponse);
 
-		setMode("voting");
+		setMode("preview");
 	});
 
 	const getTemplate = () => {
@@ -121,13 +117,10 @@ const CandidatesPage = () => {
 								user()?.details?.full_name,
 							)}
 						</p>
-						<button
+						<div
 							class={c(
 								"bg-coral py-2 px-12 text-white rounded-2xl self-center",
-								"disabled:bg-grey disabled:text-black disabled:hover:scale-100",
-								"transition-all hover:scale-110",
 							)}
-							onclick={() => setMode("voting")}
 						>
 							<img
 								class="h-8 inline"
@@ -139,7 +132,7 @@ const CandidatesPage = () => {
 									countDown(),
 								)}
 							</p>
-						</button>
+						</div>
 						<button
 							class={c(
 								"bg-coral py-2 px-12 text-white rounded-2xl self-center",
@@ -174,7 +167,7 @@ const CandidatesPage = () => {
 				return (
 					<div class="h-full flex flex-col">
 						{getTemplate()}
-						<div class="flex flex-col gap-12 mb-12">
+						<div class="flex flex-col gap-12 pb-12">
 							<p class="self-center pt-4 px-2 text-coral text-3xl font-bold border-t border-coral">
 								{t("candidates.options-title")}
 							</p>
@@ -192,6 +185,16 @@ const CandidatesPage = () => {
 									</div>
 								))}
 							</div>
+							<button
+								class={c(
+									"bg-blue py-2 px-12 text-white rounded-2xl self-center",
+									"disabled:bg-grey disabled:text-black disabled:hover:scale-100",
+									"transition-all hover:scale-110",
+								)}
+								onclick={() => setMode("voting")}
+							>
+								{t("candidates.voting-button")}
+							</button>
 						</div>
 					</div>
 				);
@@ -204,7 +207,9 @@ const CandidatesPage = () => {
 							<div class="w-full flex flex-col gap-12">
 								{candidates().map((cand) => (
 									<div class="w-full grid grid-cols-3 gap-4 items-center bg-white rounded-2xl px-10 py-6">
-										<p class="uppercase font-bold text-sm sm:text-base">{cand.full_name}</p>
+										<p class="uppercase font-bold text-sm sm:text-base">
+											{cand.full_name}
+										</p>
 										<div class="place-self-center w-16 h-16 sm:w-24 sm:h-24 overflow-hidden">
 											<img
 												class="object-fill w-16 h-16 sm:w-24 sm:h-24"
@@ -215,8 +220,9 @@ const CandidatesPage = () => {
 											class="place-self-end w-16 h-16 sm:w-24 sm:h-24"
 											type="checkbox"
 											onInput={(e) => {
-											console.log(e.target.value);
-											setCandidate(cand.id)}}
+												console.log(e.target.value);
+												setCandidate(cand.id);
+											}}
 											checked={candidate() === cand.id}
 										/>
 									</div>
