@@ -68,7 +68,11 @@
 			"welcome": "Hola ${full_name}",
 			"timer-button": "Quedan ${time_left} minutos",
 			"live-button": "Ver votaciones EN VIVO",
-			"results-button": "Ver resultados"
+			"results-button": "Ver resultados",
+			"options-title": "Conoce tus opciones",
+			"voting-title": "Escoge la opción deseada",
+			"null-title": "Nulo",
+			"submit-button": "Cerrar voto"
 		}
 	}
 }

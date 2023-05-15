@@ -15,10 +15,11 @@ module.exports = {
 			colors: {
 				coral: "#DC6453",
 				grey: "#E8E3E3",
+				blue: "#45A7EE",
 			},
 			width: {
 				500: "32rem",
-                400: "25rem",
+				400: "25rem",
 				350: "22rem",
 				300: "19rem",
 			},

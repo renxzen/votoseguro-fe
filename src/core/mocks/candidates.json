@@ -1,25 +1,34 @@
 {
-	"count": 2,
+	"count": 3,
 	"next": null,
 	"previous": null,
 	"results": [
 		{
-			"id": 1,
-			"full_name": "Richard Cancino",
-			"image": "http://c5af-190-238-238-228.ngrok-free.app/media/candidates/None__RICHARD_CANCINO__292543349_462260685901694_6263011822499862470_n.jpeg",
-			"description": "Alcalde guapo",
-			"update_at": "2023-05-04",
-			"number_voters": 3,
-			"percentage_number_voters": "100.0%"
+			"id": 3,
+			"full_name": "Susana Villarán",
+			"image": "http://backend.votoseguro.pro/media/candidates/3__SUSANA_VILLAR%C3%81N__villaran.jpg",
+			"description": "Susana María del Carmen Villarán de la Puente (Lima, 16 de agosto de 1949) es una política peruana. Fue alcaldesa de Lima Metropolitana entre 2011 y 2014, además, fue la primera mujer en acceder al cargo por medio de elecciones. Se desempeñó también como ministra de Promoción de la Mujer y del Desarrollo Humano (2000-2001), durante el gobierno transitorio de Valentín Paniagua, y como miembro de la Comisión Interamericana de Derechos Humanos (2002-2005).",
+			"update_at": "2023-05-15",
+			"number_voters": 0,
+			"percentage_number_voters": "No tiene votantes"
 		},
 		{
-			"id": 3,
-			"full_name": "Austin Ramirez",
-			"image": "http://c5af-190-238-238-228.ngrok-free.app/media/candidates/None__AUSTIN_RAMIREZ__292543349_462260685901694_6263011822499862470_n.jpeg",
-			"description": "Proplayer",
-			"update_at": "2023-05-04",
+			"id": 4,
+			"full_name": "Kenji Fujimori",
+			"image": "http://backend.votoseguro.pro/media/candidates/None__KENJI_FUJIMORI__2023-05-15_08-13.png",
+			"description": "Kenji Gerardo Fujimori Higuchi (Lima, 19 de mayo de 1980) es un agrónomo y político peruano-japonés, hijo de Alberto Fujimori. En el 2011 postuló al congreso por Fuerza Popular y fue el congresista más votado del año 2011. Fue reelecto en 2016 y 20 de marzo de 2018 anunció la creación del nuevo partido político Cambio 21. Tras los denominados Mamanivideos, él y otros dos congresistas de su bloque fueron separados del Congreso de la República por los delitos de cohecho pasivo activo y tráfico de influencias.",
+			"update_at": "2023-05-15",
 			"number_voters": 0,
-			"percentage_number_voters": "0.0%"
+			"percentage_number_voters": "No tiene votantes"
+		},
+		{
+			"id": 2,
+			"full_name": "Rafael Aliaga",
+			"image": "http://backend.votoseguro.pro/media/candidates/2__RAFAEL_ALIAGA__porky.jpg",
+			"description": "Rafael Bernardo López-Aliaga Cazorla (Lima, 11 de febrero de 1961) es un empresario y político peruano y actual alcalde de Lima tras vencer en las elecciones municipales de 2022. Fue fundador y accionista de Peruval Corp SA además de ser accionista de Ferrocarril Transandino S. A. Es presidente del directorio de Peru Holding de Turismo (PTHSAA) desde 1991.",
+			"update_at": "2023-05-15",
+			"number_voters": 0,
+			"percentage_number_voters": "No tiene votantes"
 		}
 	]
 }
