@@ -90,7 +90,7 @@ const CandidatesPage = () => {
 		const candidatesResponse = await getCandidates(params.id);
 		setCandidates(candidatesResponse);
 
-		setMode("preview");
+		setMode("voting");
 	});
 
 	const getTemplate = () => {
@@ -117,7 +117,7 @@ const CandidatesPage = () => {
 						<p class="text-center">
 							{t("candidates.welcome").replace(
 								"${full_name}",
-								user()?.details.full_name,
+								user()?.details?.full_name,
 							)}
 						</p>
 						<button
@@ -171,18 +171,18 @@ const CandidatesPage = () => {
 				return <Loading />;
 			case "preview":
 				return (
-					<div class="flex flex-col">
+					<div class="h-full flex flex-col">
 						{getTemplate()}
 						<div class="flex flex-col gap-12 mb-12">
 							<p class="self-center pt-4 px-2 text-coral text-3xl font-bold border-t border-coral">
 								{t("candidates.options-title")}
 							</p>
-							<div class={c("w-full flex flex-wrap justify-center gap-16")}>
+							<div class="w-full flex flex-wrap justify-center gap-16">
 								{candidates().map((candidate) => (
 									<div class="self-start w-300 sm:w-350 flex flex-col items-center gap-4">
 										<div class="w-4/6 h-64 sm:h-80 overflow-hidden">
 											<img
-												class="object-fill w-full h-80"
+												class="object-fill w-full h-64 sm:h-80"
 												src={candidate.image}
 											/>
 										</div>
@@ -198,10 +198,27 @@ const CandidatesPage = () => {
 				return (
 					<div class="h-full flex flex-col">
 						{getTemplate()}
-						<div class="h-full bg-coral">
-							<div>oh no</div>
-							<div></div>
-							<div></div>
+						<div class="h-full flex flex-col bg-coral px-8 py-10 gap-8">
+							<p class="text-white text-3xl">{t("candidates.voting-title")}</p>
+							<div class="w-full flex flex-col gap-12">
+								{candidates().map((candidate) => (
+									<div
+										class={c(
+											"w-full grid grid-cols-3 gap-4 items-center",
+											"bg-white rounded-2xl px-10 py-6",
+										)}
+									>
+										<p class="uppercase font-bold">{candidate.full_name}</p>
+										<div class="w-24 h-24 overflow-hidden">
+											<img
+												class="object-fill w-24 h-24"
+												src={candidate.image}
+											/>
+										</div>
+										<input type="checkbox" />
+									</div>
+								))}
+							</div>
 						</div>
 					</div>
 				);
