@@ -13,7 +13,7 @@ import { createServerData$ } from "solid-start/server";
 
 export const routeData = () => createServerData$(fetchEntities);
 
-const Main = () => {
+const EntitiesPage = () => {
 	const [t] = useI18n();
 	const response = useRouteData<typeof routeData>();
 	const initialEntities = response()!;
@@ -110,4 +110,4 @@ const Main = () => {
 	);
 };
 
-export default Main;
+export default EntitiesPage;

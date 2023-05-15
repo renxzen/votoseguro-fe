@@ -50,6 +50,7 @@
 			"title": "Votaciones actuales",
 			"placeholder": "Buscar...",
 			"welcome": "Bienvenido a la votación de ${entity_name}. Puede ingresar verificando tu identidad para realizar la votación con la siguiente descripción: ${description}",
+			"vote": "Votar",
 			"login": {
 				"button": "Ingresar",
 				"start": "Verificación de ingreso al padrón",
@@ -63,8 +64,11 @@
 			}
 		},
 		"candidates": {
-			"subtitle": "Bienvenido a la votación de ${entity_name}, para la siguiente elección: ${description}. Podrás empezar la votación durante el tiempo de duración establecido. Para conocer tus opciones de votación puedes ver la información en la parte de abajo."
-
+			"subtitle": "Bienvenido a la votación de ${entity_name}, para la siguiente elección: ${description}. Podrás empezar la votación durante el tiempo de duración establecido. Para conocer tus opciones de votación puedes ver la información en la parte de abajo.",
+			"welcome": "Hola ${full_name}",
+			"timer-button": "Quedan ${time_left} minutos",
+			"live-button": "Ver votaciones EN VIVO",
+			"results-button": "Ver resultados"
 		}
 	}
 }

@@ -1,6 +1,6 @@
 import { useI18n } from "@solid-primitives/i18n";
 import { useNavigate, useParams, useRouteData } from "solid-start";
-import { createDeferred, createRenderEffect, createSignal } from "solid-js";
+import { createDeferred, createEffect, createRenderEffect, createSignal } from "solid-js";
 import { fetchEntities } from "~/core/services/entity";
 import { c } from "~/core/utils/c";
 import { Entity } from "~/core/types/Entity";
@@ -13,19 +13,24 @@ import { Loading } from "~/components/Loading";
 
 export const routeData = () => createServerData$(fetchEntities);
 
-const Main = () => {
+const EntityPage = () => {
 	const [t] = useI18n();
 	const params = useParams<{ id: string }>();
 	const navigate = useNavigate();
 
+	const navigateBack = () => navigate("/votaciones", { replace: true });
 	const response = useRouteData<typeof routeData>();
-	const entity: Entity | undefined = response()?.find(
-		(entity: Entity) => entity.id === Number(params.id),
-	);
+	const entity = response()?.find((en: Entity) => en.id === Number(params.id));
+	const [userLogged, setUserLogged] = createSignal(false);
+
+	createEffect(() => {
+		const item = localStorage.getItem("user");
+		setUserLogged(Boolean(item));
+	});
 
 	createDeferred(() => {
 		if (!entity) {
-			navigate("/votaciones", { replace: true });
+			navigateBack();
 			return;
 		}
 	});
@@ -46,9 +51,18 @@ const Main = () => {
 			return;
 		}
 
-		setUser(response);
+		const user: User = {
+			token: response.token,
+			details: {
+				full_name: response.details.full_name,
+				dni: response.details.dni,
+			},
+		};
+		setUser(user);
 		setMode("otp");
 	};
+
+	const goToCandidates = () => navigate(`/votaciones/${entity?.id}/candidatos`);
 
 	const handleOtp = async () => {
 		const request: OtpRequest = { code: otp(), token: user()?.token };
@@ -60,10 +74,9 @@ const Main = () => {
 			return;
 		}
 
-		const login: LoginRequest = { dni: dni(), full_name: "none" };
-		localStorage.setItem("login", JSON.stringify(login));
+		localStorage.setItem("user", JSON.stringify(user()));
 		localStorage.setItem("auth", JSON.stringify(response.details));
-		navigate(`/votaciones/${entity?.id}/candidatos`, { replace: true });
+		goToCandidates();
 	};
 
 	const getMode = () => {
@@ -90,15 +103,27 @@ const Main = () => {
 									</p>
 								</div>
 								<div class="flex-1 grid place-items-center">
-									<button
-										class={c(
-											"bg-coral py-3 px-16 text-white rounded-2xl font-bold text-2xl sm:text-4xl",
-											"transition-all hover:scale-110",
-										)}
-										onclick={() => setMode("login")}
-									>
-										{t("votes.login.button")}
-									</button>
+									{userLogged() ? (
+										<button
+											class={c(
+												"bg-coral py-3 px-16 text-white rounded-2xl font-bold text-2xl sm:text-4xl",
+												"transition-all hover:scale-110",
+											)}
+											onclick={goToCandidates}
+										>
+											{t("votes.vote")}
+										</button>
+									) : (
+										<button
+											class={c(
+												"bg-coral py-3 px-16 text-white rounded-2xl font-bold text-2xl sm:text-4xl",
+												"transition-all hover:scale-110",
+											)}
+											onclick={() => setMode("login")}
+										>
+											{t("votes.login.button")}
+										</button>
+									)}
 								</div>
 							</div>
 						</div>
@@ -192,4 +217,4 @@ const Main = () => {
 	);
 };
 
-export default Main;
+export default EntityPage;

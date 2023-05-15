@@ -7,9 +7,6 @@ export type User = {
 };
 
 export type Authentication = {
-	status: string;
-	details: {
-		token: string;
-		code: string;
-	};
+	token: string;
+	code: string;
 };
