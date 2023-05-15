@@ -1,6 +1,6 @@
 import { useI18n } from "@solid-primitives/i18n";
-import { useNavigate, useParams } from "solid-start";
-import { createResource, createSignal } from "solid-js";
+import { useNavigate, useParams, useRouteData } from "solid-start";
+import { createSignal } from "solid-js";
 import { fetchEntities } from "~/core/services/entity";
 import { c } from "~/core/utils/c";
 import { Entity } from "~/core/types/Entity";
@@ -8,14 +8,17 @@ import { User } from "~/core/types/Responses";
 import { LoginRequest, OtpRequest } from "~/core/types/Requests";
 import { fetchUser, fetchOtp } from "~/core/services/user";
 import Header from "~/components/Header";
+import { createServerData$ } from "solid-start/server";
+
+export const routeData = () => createServerData$(fetchEntities);
 
 const Main = () => {
 	const [t] = useI18n();
 	const params = useParams<{ id: string }>();
 	const navigate = useNavigate();
 
-	const [response] = createResource(fetchEntities);
-	const entity: Entity | undefined = response()?.results.find(
+	const response = useRouteData<typeof routeData>();
+	const entity: Entity | undefined = response()?.find(
 		(entity: Entity) => entity.id === Number(params.id),
 	);
 
@@ -24,13 +27,11 @@ const Main = () => {
 	const [dni, setDni] = createSignal("");
 	const [otp, setOtp] = createSignal("");
 	const [user, setUser] = createSignal({} as User);
-	// const [user] = createResource(loginRequest, fetchUser);
 
 	const handleLogin = async () => {
 		const request: LoginRequest = { dni: dni(), full_name: "none" };
 		const response = await fetchUser(request);
 		setUser(response);
-		console.log(user());
 
 		setMode("otp");
 	};
@@ -40,6 +41,8 @@ const Main = () => {
 		const response = await fetchOtp(request);
 		console.log(response);
 
+		const login: LoginRequest = { dni: dni(), full_name: "none" };
+		sessionStorage.setItem("login", JSON.stringify(login));
 		sessionStorage.setItem("auth", JSON.stringify(response.details));
 		navigate(`/votaciones/${entity?.id}/candidatos`, { replace: true });
 	};

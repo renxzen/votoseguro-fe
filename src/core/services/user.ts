@@ -3,7 +3,6 @@ import mockUser from "~/core/mocks/user.json";
 import mockOtp from "~/core/mocks/otp.json";
 import { baseUrl } from "~/core/configs/base";
 
-
 export const fetchUser = async (request: LoginRequest) =>
 	fetch(`${baseUrl}/user/login-voter/`, {
 		method: "POST",

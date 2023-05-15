@@ -16,7 +16,7 @@ export const routeData = () => createServerData$(fetchEntities);
 const Main = () => {
 	const [t] = useI18n();
 	const response = useRouteData<typeof routeData>();
-	const initialEntities = response()!;
+	const initialEntities = response ? response()! : [];
 	const [entities, setEntities] = createSignal<Entity[]>(initialEntities);
 	const [input, setInput] = createSignal("");
 

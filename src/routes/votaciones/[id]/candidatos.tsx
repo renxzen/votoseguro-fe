@@ -5,6 +5,9 @@ import { fetchEntities } from "~/core/services/entity";
 import { Entity } from "~/core/types/Entity";
 import Header from "~/components/Header";
 import { Authentication } from "~/core/types/Responses";
+import { createServerAction$, redirect } from "solid-start/server";
+import { fetchUser } from "~/core/services/user";
+import { LoginRequest } from "~/core/types/Requests";
 
 const Main = () => {
 	const [t] = useI18n();
@@ -12,9 +15,18 @@ const Main = () => {
 	const navigate = useNavigate();
 
 	const [response] = createResource(fetchEntities);
-	const entity: Entity | undefined = response()?.results.find(
+	const entity: Entity | undefined = response()?.find(
 		(entity: Entity) => entity.id === Number(params.id),
 	);
+
+	const [checking, check] = createServerAction$(async (json: string | null) => {
+		const request: LoginRequest | undefined = JSON.parse(json || "");
+		if (!request) return redirect(`/votaciones/${params.id}`);
+
+		const response = await fetchUser(request);
+		console.log(response);
+		// return redirect(`/votaciones/${params.id}`);
+	});
 
 	// const item = sessionStorage.getItem("auth");
 	// if (!item) {
@@ -22,10 +34,13 @@ const Main = () => {
 	// }
 	// const auth: Authentication = JSON.parse(item!)
 	// console.log(auth)
+	
+	check(sessionStorage.getItem("login"));
 
 	return (
 		<div class="h-screen">
 			<Header />
+			{checking.pending}
 			<div class="h-full">
 				<div class="w-full max-h-52 overflow-hidden border-y border-coral">
 					<img
