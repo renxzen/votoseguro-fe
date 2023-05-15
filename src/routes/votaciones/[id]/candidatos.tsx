@@ -1,7 +1,7 @@
 import { useI18n } from "@solid-primitives/i18n";
-import { useNavigate, useParams } from "solid-start";
+import { useNavigate, useParams, useRouteData } from "solid-start";
 import { createEffect, createSignal, onCleanup } from "solid-js";
-import { fetchEntities } from "~/core/services/entity";
+import { fetchCandidates, fetchEntities } from "~/core/services/entity";
 import { Entity } from "~/core/types/Entity";
 import Header from "~/components/Header";
 import { User } from "~/core/types/Responses";
@@ -11,6 +11,9 @@ import { Loading } from "~/components/Loading";
 import { c } from "~/core/utils/c";
 import clock from "~/assets/svg/clock.svg";
 import { getDateValues } from "~/core/utils/getDateValues";
+import { createServerData$ } from "solid-start/server";
+
+export const routeData = () => createServerData$(fetchCandidates);
 
 const CandidatesPage = () => {
 	const [t] = useI18n();
@@ -20,15 +23,18 @@ const CandidatesPage = () => {
 	const [entity, setEntity] = createSignal({} as Entity);
 	const [user, setUser] = createSignal({} as User);
 
+	const response = useRouteData<typeof routeData>();
+	const candidates = response();
+
 	const target = new Date();
 	target.setHours(target.getHours() + 1);
 	const countDownTarget = target.getTime();
-	const [countDown, setCountDown] = createSignal(
-		"60:00"
-	);
+	const [countDown, setCountDown] = createSignal("60:00");
 
 	const interval = setInterval(() => {
-		const {minutes, seconds} = getDateValues(countDownTarget - new Date().getTime());
+		const { minutes, seconds } = getDateValues(
+			countDownTarget - new Date().getTime(),
+		);
 		const paddedMinutes = minutes.toString().padStart(2, "0");
 		const paddedSeconds = seconds.toString().padStart(2, "0");
 		setCountDown(`${paddedMinutes}:${paddedSeconds}`);
@@ -139,6 +145,29 @@ const CandidatesPage = () => {
 							>
 								{t("candidates.results-button")}
 							</button>
+						</div>
+					</div>
+					<div class="flex flex-col gap-12 mb-12">
+						<p class="self-center pt-4 px-2 text-coral text-3xl font-bold border-t border-coral">
+							{t("candidates.options-title")}
+						</p>
+						<div
+							class={c(
+								"w-full flex flex-wrap justify-center gap-16",
+							)}
+						>
+							{candidates?.map((candidate) => (
+								<div class="self-start w-300 sm:w-350 flex flex-col items-center gap-4">
+									<div class="w-4/6 h-64 sm:h-80 overflow-hidden">
+										<img
+											class="object-fill w-full h-80"
+											src={candidate.image}
+										/>
+									</div>
+									<p class="uppercase font-bold">{candidate.full_name}</p>
+									<p class="text-xs">{candidate.description}</p>
+								</div>
+							))}
 						</div>
 					</div>
 				</div>
