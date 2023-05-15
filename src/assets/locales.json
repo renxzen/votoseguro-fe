@@ -49,7 +49,7 @@
 		"votes": {
 			"title": "Votaciones actuales",
 			"placeholder": "Buscar...",
-			"welcome": "Bienvenido a la votación de _entity_name_. Puede ingresar verificando tu identidad para realizar la votación con la siguiente descripción: _description_",
+			"welcome": "Bienvenido a la votación de ${entity_name}. Puede ingresar verificando tu identidad para realizar la votación con la siguiente descripción: ${description}",
 			"login": {
 				"button": "Ingresar",
 				"start": "Verificación de ingreso al padrón",
@@ -59,11 +59,11 @@
 				"id-placeholder": "Ingresar DNI"
 			},
 			"otp": {
-				"message": "Bienvenido _full_name_, te encuentras en el padrón de votantes, ahora vamos a verificar tu identidad, te hemos enviado una clave de un solo uso a tu correo y celular. Por favor ingrésalo en la casilla."
+				"message": "Bienvenido ${full_name}, te encuentras en el padrón de votantes, ahora vamos a verificar tu identidad, te hemos enviado una clave de un solo uso a tu correo y celular. Por favor ingrésalo en la casilla."
 			}
 		},
 		"candidates": {
-			"subtitle": "Bienvenido a la votación de _entity_name_, para la siguiente elección: _description_. Podrás empezar la votación durante el tiempo de duración establecido. Para conocer tus opciones de votación puedes ver la información en la parte de abajo."
+			"subtitle": "Bienvenido a la votación de ${entity_name}, para la siguiente elección: ${description}. Podrás empezar la votación durante el tiempo de duración establecido. Para conocer tus opciones de votación puedes ver la información en la parte de abajo."
 
 		}
 	}

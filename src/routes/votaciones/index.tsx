@@ -16,15 +16,15 @@ export const routeData = () => createServerData$(fetchEntities);
 const Main = () => {
 	const [t] = useI18n();
 	const response = useRouteData<typeof routeData>();
-	const initialEntities = response ? response()! : [];
-	const [entities, setEntities] = createSignal<Entity[]>(initialEntities);
+	const initialEntities = response()!;
+	const [entities, setEntities] = createSignal(initialEntities);
 	const [input, setInput] = createSignal("");
 
 	createEffect(() => {
 		if (!input()) setEntities(initialEntities);
 
 		setEntities(
-			initialEntities.filter((entity: Entity) =>
+			initialEntities?.filter((entity: Entity) =>
 				entity.name
 					.replace(" ", "")
 					.toLowerCase()
