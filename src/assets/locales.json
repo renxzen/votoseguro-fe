@@ -69,7 +69,8 @@
 			"timer-button": "Quedan ${time_left} minutos",
 			"live-button": "Ver votaciones EN VIVO",
 			"results-button": "Ver resultados",
-			"options-title": "Conoce tus opciones"
+			"options-title": "Conoce tus opciones",
+			"voting-title": "Escoge la opción deseada"
 		}
 	}
 }
