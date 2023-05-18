@@ -73,7 +73,15 @@
 			"voting-title": "Escoge la opción deseada",
 			"voting-button": "Votar",
 			"null-title": "Nulo",
-			"submit-button": "Cerrar voto"
+			"submit-button": "Cerrar voto",
+			"vote-submitted": {
+				"title": "Muchas gracias por votar!",
+				"subtitle": "Su voto ha sido confirmado correctamente, el código de confirmación le llegará en unos minutos al correo y celular.",
+				"code-info": "Código de confirmación: ${confirmationCode}",
+				"success": "Voto satisfactorio!",
+				"auth-error": "Ha habido un error con sus credenciales, le recomendamos que ingrese nuevamente",
+				"voted-error": "Usted ya ha elegido a un candidato!"
+			}
 		}
 	}
 }
