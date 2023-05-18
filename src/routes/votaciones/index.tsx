@@ -1,5 +1,10 @@
 import { useI18n } from "@solid-primitives/i18n";
-import { createEffect, createResource, createSignal } from "solid-js";
+import {
+	createEffect,
+	createRenderEffect,
+	createResource,
+	createSignal,
+} from "solid-js";
 import Header from "~/components/Header";
 import { fetchEntities } from "~/core/services/entity";
 import { Entity } from "~/core/types/Entity";
@@ -9,7 +14,7 @@ import clock from "~/assets/svg/clock.svg";
 import search from "~/assets/svg/search.svg";
 import cross from "~/assets/svg/cross.svg";
 import { useRouteData } from "solid-start";
-import { createServerData$ } from "solid-start/server";
+import server$, { createServerData$ } from "solid-start/server";
 
 export const routeData = () => createServerData$(fetchEntities);
 
@@ -19,6 +24,17 @@ const EntitiesPage = () => {
 	const initialEntities = response()!;
 	const [entities, setEntities] = createSignal(initialEntities);
 	const [input, setInput] = createSignal("");
+
+	const getEntities = server$(async () => {
+		const response = await fetchEntities();
+		return response;
+	});
+
+	createRenderEffect(async () => {
+		if (!entities()) {
+			setEntities(await getEntities());
+		}
+	});
 
 	createEffect(() => {
 		if (!input()) setEntities(initialEntities);

@@ -121,7 +121,9 @@ const CandidatesPage = () => {
 			if (response.status !== "successful") {
 				throw "UserAlreadyVoted";
 			}
-			alert("candidates.vote-submitted.success");
+
+
+			alert(t("candidates.vote-submitted.success"));
 			setVoted(true);
 			setMode("voted");
 		} catch (error) {
@@ -134,12 +136,19 @@ const CandidatesPage = () => {
 					break;
 				case "UserAlreadyVoted":
 					alert(t("candidates.vote-submitted.voted-error"));
-					setMode("preview");
+					setMode("results");
 					setVoted(true);
 					break;
 			}
 		}
 	};
+
+	const handleResults = async () => {
+		setMode("loading")
+		const candidatesResponse = await getCandidates(params.id);
+		setCandidates(candidatesResponse);
+		setMode("results")
+	}
 
 	const getTemplate = () => {
 		return (
@@ -203,6 +212,7 @@ const CandidatesPage = () => {
 								"transition-all hover:scale-110",
 							)}
 							disabled={!voted()}
+							onclick={handleResults}
 						>
 							{t("candidates.results-button")}
 						</button>
@@ -322,6 +332,17 @@ const CandidatesPage = () => {
 										"#PR34523",
 									)}
 								</p>
+							<button
+								class={c(
+									"bg-blue py-2 px-12 text-white rounded-2xl self-center",
+									"disabled:bg-grey disabled:text-black disabled:hover:scale-100",
+									"transition-all hover:scale-110",
+								)}
+								disabled={!voted()}
+								onclick={handleResults}
+							>
+								{t("candidates.results-button")}
+							</button>
 							</div>
 						</div>
 					</div>
@@ -353,22 +374,11 @@ const CandidatesPage = () => {
 									<p class="flex-1 uppercase font-bold">
 										{t("candidates.null-title")}
 									</p>
-										<div class="flex-[5]">
+									<div class="flex-[5]">
 
-										</div>
+									</div>
 								</div>
 							</div>
-							<button
-								class={c(
-									"bg-blue py-2 px-12 text-white rounded-2xl self-center",
-									"disabled:bg-grey disabled:text-black disabled:hover:scale-100",
-									"transition-all hover:scale-110",
-								)}
-								disabled={candidate() < 0}
-								onclick={() => handleVote(candidate())}
-							>
-								{t("candidates.submit-button")}
-							</button>
 						</div>
 					</div>
 				);
