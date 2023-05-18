@@ -26,17 +26,17 @@ const CandidatesPage = () => {
 	const [candidates, setCandidates] = createSignal<Candidate[]>([]);
 
 	const target = new Date();
-	target.setHours(target.getHours() + 1);
+	target.setMinutes(target.getMinutes() + 5);
 	const countDownTarget = target.getTime();
-	const [countDown, setCountDown] = createSignal("60:00");
+	const [countDown, setCountDown] = createSignal("5:00");
 
 	const interval = setInterval(() => {
 		const { minutes, seconds } = getDateValues(
 			countDownTarget - new Date().getTime(),
 		);
-		const paddedMinutes = minutes.toString().padStart(2, "0");
-		const paddedSeconds = seconds.toString().padStart(2, "0");
-		setCountDown(`${paddedMinutes}:${paddedSeconds}`);
+		const stringMinutes = minutes.toString();
+		const stringSeconds = seconds.toString().padStart(2, "0");
+		setCountDown(`${stringMinutes}:${stringSeconds}`);
 	}, 1000);
 
 	onCleanup(() => {
