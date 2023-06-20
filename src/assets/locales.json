@@ -53,6 +53,7 @@
 			"vote": "Votar",
 			"login": {
 				"button": "Ingresar",
+				"loading": "Cargando...",
 				"start": "Verificación de ingreso al padrón",
 				"name": "Nombre completo",
 				"name-placeholder": "Ingresar nombre completo",

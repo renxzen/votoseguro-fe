@@ -8,7 +8,7 @@ import { User } from "~/core/types/Responses";
 import { LoginRequest, OtpRequest } from "~/core/types/Requests";
 import { fetchUser, fetchOtp } from "~/core/services/user";
 import Header from "~/components/Header";
-import { createServerData$ } from "solid-start/server";
+import server$, { createServerData$ } from "solid-start/server";
 import { Loading } from "~/components/Loading";
 
 export const routeData = () => createServerData$(fetchEntities);
@@ -36,14 +36,21 @@ const EntityPage = () => {
 	});
 
 	const [mode, setMode] = createSignal("detail");
-
 	const [dni, setDni] = createSignal("");
 	const [otp, setOtp] = createSignal("");
 	const [user, setUser] = createSignal({} as User);
+	const [loading, setLoading] = createSignal(false);
+
+	const login = server$(async (request: LoginRequest) => {
+		const response = await fetchUser(request);
+		return response;
+	});
 
 	const handleLogin = async () => {
 		const request: LoginRequest = { dni: dni(), full_name: "none" };
-		const response = await fetchUser(request);
+		setLoading(true);
+		const response = await login(request);
+		setLoading(false);
 
 		if (response.status !== "successful") {
 			setDni("");
@@ -159,9 +166,11 @@ const EntityPage = () => {
 										"transition-all hover:scale-110",
 									)}
 									onclick={() => handleLogin()}
-									disabled={dni().length < 8}
+									disabled={dni().length < 8 || loading()}
 								>
-									{t("votes.login.button")}
+									{loading()
+										? t("votes.login.loading")
+										: t("votes.login.button")}
 								</button>
 							</div>
 						</div>
@@ -197,9 +206,11 @@ const EntityPage = () => {
 											"transition-all hover:scale-110",
 										)}
 										onclick={() => handleOtp()}
-										disabled={otp().length < 4}
+										disabled={otp().length < 4 || loading()}
 									>
-										{t("votes.login.button")}
+										{loading()
+											? t("votes.login.loading")
+											: t("votes.login.button")}
 									</button>
 								</div>
 							</div>
