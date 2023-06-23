@@ -1,6 +1,11 @@
 import { useI18n } from "@solid-primitives/i18n";
-import { useNavigate, useParams } from "solid-start";
-import { createEffect, createSignal, onCleanup } from "solid-js";
+import {
+	RouteDataArgs,
+	useNavigate,
+	useParams,
+	useRouteData,
+} from "solid-start";
+import { createEffect, createSignal, onCleanup, untrack } from "solid-js";
 import {
 	fetchCandidates,
 	fetchEntities,
@@ -17,7 +22,11 @@ import clock from "~/assets/svg/clock.svg";
 import { getDateValues } from "~/core/utils/getDateValues";
 import server$, { createServerData$, redirect } from "solid-start/server";
 
-export const routeData = () => createServerData$(fetchCandidates);
+export const routeData = ({ params }: RouteDataArgs) =>
+	createServerData$(
+		async ([id]) => [await fetchCandidates(id), await fetchEntities()],
+		{ key: () => [params.id] },
+	);
 
 const CandidatesPage = () => {
 	const [t] = useI18n();
@@ -29,6 +38,16 @@ const CandidatesPage = () => {
 	const [candidate, setCandidate] = createSignal(-1);
 	const [voted, setVoted] = createSignal(false);
 	const [candidates, setCandidates] = createSignal<Candidate[]>([]);
+
+	const requests = useRouteData<typeof routeData>();
+	const response = requests();
+
+	if (response) {
+		setCandidates(response[0] as Candidate[]);
+		setEntity(
+			response[1].find((en: Entity) => en.id === Number(params.id)) as Entity[],
+		);
+	}
 
 	const target = new Date();
 	target.setMinutes(target.getMinutes() + 5);
@@ -80,10 +99,8 @@ const CandidatesPage = () => {
 	});
 
 	createEffect(async () => {
-		const entities = await getEntities();
-		const ent = entities.find((en: Entity) => en.id === Number(params.id));
 		const item = localStorage.getItem("user");
-		if (!item || !ent) {
+		if (!item) {
 			navigateBack();
 			return;
 		}
@@ -95,12 +112,24 @@ const CandidatesPage = () => {
 		// localStorage.setItem("user", JSON.stringify(loggedUser));
 
 		setUser(user);
-		setEntity(ent);
 
-		const candidatesResponse = await getCandidates(params.id);
-		setCandidates(candidatesResponse);
+		if (!untrack(entity) || untrack(candidates).length === 0) {
+			const entities = await getEntities();
+			const ent = entities.find((en: Entity) => en.id === Number(params.id));
+			if (!ent) {
+				navigateBack();
+				return;
+			}
+
+			setEntity(ent!);
+
+			const candidates = await getCandidates(params.id);
+			setCandidates(candidates);
+		}
 
 		setMode("preview");
+
+		alert("nigga");
 	});
 
 	const handleVote = async (candidateId: number) => {
@@ -121,7 +150,6 @@ const CandidatesPage = () => {
 			if (response.status !== "successful") {
 				throw "UserAlreadyVoted";
 			}
-
 
 			alert(t("candidates.vote-submitted.success"));
 			setVoted(true);
@@ -144,11 +172,11 @@ const CandidatesPage = () => {
 	};
 
 	const handleResults = async () => {
-		setMode("loading")
+		setMode("loading");
 		const candidatesResponse = await getCandidates(params.id);
 		setCandidates(candidatesResponse);
-		setMode("results")
-	}
+		setMode("results");
+	};
 
 	const getTemplate = () => {
 		return (
@@ -332,17 +360,17 @@ const CandidatesPage = () => {
 										"#PR34523",
 									)}
 								</p>
-							<button
-								class={c(
-									"bg-blue py-2 px-12 text-white rounded-2xl self-center",
-									"disabled:bg-grey disabled:text-black disabled:hover:scale-100",
-									"transition-all hover:scale-110",
-								)}
-								disabled={!voted()}
-								onclick={handleResults}
-							>
-								{t("candidates.results-button")}
-							</button>
+								<button
+									class={c(
+										"bg-blue py-2 px-12 text-white rounded-2xl self-center",
+										"disabled:bg-grey disabled:text-black disabled:hover:scale-100",
+										"transition-all hover:scale-110",
+									)}
+									disabled={!voted()}
+									onclick={handleResults}
+								>
+									{t("candidates.results-button")}
+								</button>
 							</div>
 						</div>
 					</div>
@@ -374,9 +402,7 @@ const CandidatesPage = () => {
 									<p class="flex-1 uppercase font-bold">
 										{t("candidates.null-title")}
 									</p>
-									<div class="flex-[5]">
-
-									</div>
+									<div class="flex-[5]"></div>
 								</div>
 							</div>
 						</div>

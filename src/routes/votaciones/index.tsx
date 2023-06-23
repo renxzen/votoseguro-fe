@@ -2,7 +2,6 @@ import { useI18n } from "@solid-primitives/i18n";
 import {
 	createEffect,
 	createRenderEffect,
-	createResource,
 	createSignal,
 } from "solid-js";
 import Header from "~/components/Header";
